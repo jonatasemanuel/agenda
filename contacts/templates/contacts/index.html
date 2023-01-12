@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mt-5">Minha agenda</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Sobrenome</th>
+      <th>Telefone</th>
+      <th>Categoria</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for contact in contacts  %}
+    <tr>
+      <td>
+        <a href="{% url 'show_contact' contact.id %}">{{ contact.name}}</a>
+      </td>
+      <td>{{ contact.last_name }}</td>
+      <td>{{ contact.phone }}</td>
+      <td>{{ contact.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+
