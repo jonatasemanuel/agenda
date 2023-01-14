@@ -11,7 +11,7 @@ def index(request):
     contacts = Contact.objects.order_by('name').filter(
         show=True
     )
-    paginator = Paginator(contacts, 6)
+    paginator = Paginator(contacts, 3)
     page = request.GET.get('page')
     contacts = paginator.get_page(page)
 
@@ -45,9 +45,9 @@ def find(request):
         ).filter(
             Q(full_name__icontains=termo) | Q(phone__icontains=termo)
         )
-    paginator = Paginator(contacts, 6)
-    page = request.GET.get('p')
-    contacts = paginator.get_page(page)
+    paginator = Paginator(contacts, 3)
+    pages = request.GET.get('p')
+    contacts = paginator.get_page(pages)
 
     return render(request, 'contacts/find.html',{
         'contacts': contacts
