@@ -2,6 +2,11 @@
 
 {% block content %}
 <h1 class="mt-5">{{ contact.name }} {{ contact.last_name }}</h1>
+  {% if contact.picture%}
+  <p>
+    <img src="{{ contact.picture.url }}" style="max-width: 250px; height: auto;">
+  </p>
+  {% endif%}
 <dl>
   <dt>ID</dt>
   <dd>{{ contact.id }}</dd>
@@ -24,6 +29,3 @@
   </dd>
 </dl>
 {% endblock %}
-
-
-

@@ -1,9 +1,10 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Contact
 from django.http import Http404
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
+from django.contrib import messages
 
 
 # Create your views here.
@@ -34,19 +35,20 @@ def show_contact(request, contact_id):
 
 def find(request):
     termo = request.GET.get('termo')
+    if termo is None or not termo:
+        messages.add_message(
+            request,messages.ERROR,
+            'Type something.')
+        return redirect('index')
+
     campos = Concat('name', Value(' '), 'last_name')
-    # contacts = Contact.objects.order_by('name').filter(
-    #    Q(name__icontains=termo) | Q(last_name__icontains=termo),
-        
-    #    show=True
-    # )
     contacts = Contact.objects.annotate(
         full_name = campos
         ).filter(
             Q(full_name__icontains=termo) | Q(phone__icontains=termo)
         )
     paginator = Paginator(contacts, 3)
-    pages = request.GET.get('p')
+    pages = request.GET.get('page')
     contacts = paginator.get_page(pages)
 
     return render(request, 'contacts/find.html',{
